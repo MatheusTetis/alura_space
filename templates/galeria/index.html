@@ -11,8 +11,8 @@
                 <section class="tags">
                     <p class="tags__titulo">Busque por tags:</p>
                     <ul class="tags__lista">
-                        {% for fotografia in cards %}
-                        <li class="tags__tag">{{ fotografia.get_categoria_display }}</li>
+                        {% for categoria in categorias %}
+                        <li class="tags__tag">{{ categoria }}</li>
                         {% endfor %}
                     </ul>
                 </section>
