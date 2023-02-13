@@ -1,0 +1,13 @@
+{% load static %}
+<section class="tags">
+    <p class="tags__titulo">Busque por tags:</p>
+    <form action="{% url 'buscar' %}">
+        <ul class="tags__lista">
+            {% for categoria in categorias %}
+            <li>
+                <button class="tags__tag" type="submit" name="buscar" value="{{ categoria }}">{{ categoria }}</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </form>
+</section>

@@ -92,6 +92,17 @@ table {
     width: auto; 
 }
 
+.busca__button {
+    display: flex;
+    background: inherit;
+    border: 0;
+    align-items: center;
+}
+
+.busca__form {
+    display: flex;
+}
+
 .busca__fundo {
     align-items: center;
     background-color: #041A37;
@@ -155,13 +166,13 @@ table {
     border-radius: 8px;
     border: 2px solid transparent;
     font-size: 1.2rem;
-    left: 310px;
+    right: 0px;
     margin-right: 1.5rem;
     padding: .5rem .5rem;
     position: absolute;
     text-align: center;
     top: 20px;
-    width: 100px;
+    min-width: 100px;
 }
 
 .card__info {
@@ -379,6 +390,8 @@ table {
     min-width: 100px;
     text-align: center;
     border: 2px solid transparent;
+    color: inherit;
+    font: inherit;
 }
 
 .tags__tag:hover {

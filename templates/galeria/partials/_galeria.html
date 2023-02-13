@@ -7,6 +7,10 @@
             {% for fotografia in cards %}
                 {% include 'galeria/partials/_card.html' %}
             {% endfor %}
+            {% else %}
+                <div class="imagem__texto">
+                    <p>Fotografias não encontradas</p>
+                </div>
             {% endif %}
         </ul>
     </div>
