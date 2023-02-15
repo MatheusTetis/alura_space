@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from galeria.models import Fotografia
+from usuarios.models import Favoritos
+from django.contrib.auth.models import User
 from django.db.models import Q
 from unidecode import unidecode
 
@@ -7,6 +9,8 @@ from unidecode import unidecode
 # Create your views here.
 def index(request):
     fotografias = Fotografia.objects.filter(publicada=True)
+    favoritos = Favoritos.objects.filter(usuario=request.user.id)
+    print(Fotografia.objects.select_related('usuario').all())
 
     categorias = []
     for conjunto in Fotografia.OPCOES_DE_CATEGORIA:
@@ -15,7 +19,7 @@ def index(request):
     return render(
         request,
         template_name='galeria/index.html',
-        context={'cards': fotografias, 'categorias': categorias}
+        context={'cards': fotografias, 'categorias': categorias, 'favoritos': favoritos}
     )
 
 def imagem(request, foto_id):

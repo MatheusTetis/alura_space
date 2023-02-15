@@ -1,0 +1,7 @@
+{% load static %}
+{% if user.is_authenticated %}
+<div class="user__nav">
+    <p>Boas vindas, <span class="user__name">{{ user.username }}</span>!</p>
+    <img class="cabecalho__user__img" alt="Foto de perfil" src="{% static '/assets/imagens/Banner(2).png' %}">
+</div>
+{% endif %}
