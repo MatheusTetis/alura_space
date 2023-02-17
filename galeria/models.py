@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
-from usuarios.models import Favoritos
 
 # Create your models here.
 class Fotografia(models.Model):
@@ -33,13 +32,6 @@ class Fotografia(models.Model):
         null = True,
         blank = False,
         related_name = 'user',
-    )
-    favorito = models.ForeignKey(
-        to = Favoritos,
-        on_delete = models.Count,
-        null = False,
-        blank = False,
-        related_name = 'fotoid'
     )
 
     def __str__(self):

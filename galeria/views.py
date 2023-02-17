@@ -2,16 +2,52 @@ from django.shortcuts import get_object_or_404, render
 from galeria.models import Fotografia
 from usuarios.models import Favoritos
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Case, Count, Exists, IntegerField, OuterRef, Q, When
 from unidecode import unidecode
+from django.db.models import Prefetch
 
 
 # Create your views here.
 def index(request):
-    fotografias = Fotografia.objects.filter(publicada=True)
-    favoritos = Favoritos.objects.filter(usuario=request.user.id)
-    print(Fotografia.objects.select_related('usuario').all())
+    # Criando a função "faoritada" para verificar se a foto foi favoritada
+    # (se ela existe na tabela Favoritos) usando o comando
+    # fotografia.fotofavoritada dentro do Django Template "_card.html"
+    favoritada = Favoritos.objects.filter(
+        fotografia=OuterRef('pk'),
+        usuario=request.user.id,
+        is_favorito=True,
+    )
 
+    # Criando a função "nlikes" para retornar o número de linhas da foto
+    # com "is_favorito" True ao usar o comando fotografia.nlikes
+    # dentro do Django Template "_card.html"
+    nlikes = Favoritos.objects.filter(
+        fotografia_id=OuterRef('pk'),
+        is_favorito=True,
+    ).annotate(numerolikes=Count('id'))
+
+    # Filtrando apenas fotos publicadas
+    fotografias = Fotografia.objects.filter(publicada=True)
+    # Adicionando a função "fotofavoritada"
+    fotografias = fotografias.annotate(fotofavoritada=Exists(favoritada))
+    # Adicionando a função "nlikes" que vai contar quantos is_favorito = True
+    # contem na tabela de Favoritos usando o related_name "fotoid" como ponte
+    fotografias = fotografias.annotate(
+        nlikes=Count(
+            'fotoid__is_favorito',
+            filter = Q(fotoid__is_favorito=True)
+        )
+    )
+
+    # Criando o Queryset "favoritos" filtrando o usuário que fez a requisição
+    # e trazendo apenas as fotos favoritadas
+    favoritos = Favoritos.objects.filter(
+        usuario=request.user.id,
+        is_favorito=True,
+    )
+    
+    # Carregando todas as opções de categorias registradas no Model Fotografias
+    # para disponibilizar nos botões de busca por Categoria
     categorias = []
     for conjunto in Fotografia.OPCOES_DE_CATEGORIA:
         categorias.append(conjunto[1])

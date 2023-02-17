@@ -263,6 +263,14 @@ table {
     background: inherit;
     border: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-width: 50px;
+}
+
+.heart__button > p {
+    color: #FFFFFF;
+    padding-right: 1rem;
 }
 
 .imagem {

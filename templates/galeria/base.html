@@ -17,21 +17,28 @@
         // It checks to see if the span id #heart has "liked" class, if not it run the else statement and adds the "liked" class, on a 2nd click it see that it has the "liked" class so it replaces the ihherHTML and removes class, on 3rd click it runs the else statement again cause there is no "liked" class(remomved on 2nd click).
 
         $(document).ready(function(){
-            $("#heart").click(function(){
-            if($("#heart").hasClass("liked")){
-                $("#heart").html('<i class="fa fa-heart heart__grey" aria-hidden="true"></i>');
-                $("#heart").removeClass("liked");
-                $("#id_is_favorito").val("0");
+            $(".spanheart").click(function(){
+            var fotografiaid = $(this).parent().parent().children('input')[1];
+            var isfavorito = $(this).parent().parent().children('input')[2];
+            var ptag = $(this).parent().children('p')[0];
+            if($(this).hasClass("spanheart spanheartliked")){
+                $(this).html('<i class="fa fa-heart heart__grey" aria-hidden="true"></i>');
+                $(this).removeClass("spanheartliked");
+                ptag.textContent = parseInt(ptag.textContent) - 1;
+                isfavorito.value=0;
+                //nlikes.text = nlikes.text-1;
             }else{
-                $("#heart").html('<i class="fa fa-heart heart__red" aria-hidden="true"></i>');
-                $("#heart").addClass("liked");
-                $("#id_is_favorito").val("1");
+                $(this).html('<i class="fa fa-heart heart__red" aria-hidden="true"></i>');
+                $(this).addClass("spanheart spanheartliked");
+                ptag.textContent = parseInt(ptag.textContent) + 1;
+                isfavorito.value=1;
+                //nlikes.text = nlikes.text+1;
             }
             $.ajax("{% url 'favorito' %}", {
                 type: 'POST',
                 data: {
-                    fotografia_id: $("#id_fotografia").val(),
-                    is_favorito: $("#id_is_favorito").val(),
+                    fotografia_id: fotografiaid.value,
+                    is_favorito: isfavorito.value,
                 }
             });
             });

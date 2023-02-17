@@ -51,11 +51,6 @@ def cadastro(request):
         form = CadastroForms(request.POST)
 
         if form.is_valid():
-            if form['senha_1'].value() != form['senha_2'].value():
-                # Redireciona para o nome da rota que eu quiser
-                messages.error(request, 'As senhas não correspondem')
-                return redirect('cadastro')
-
             nome = form['nome_cadastro'].value()
             email = form['email'].value()
             senha = form['senha_1'].value()
@@ -79,6 +74,12 @@ def cadastro(request):
 
             messages.success(request, f'Usuário {nome} cadastrado com sucesso!')
             return redirect('login')
+        else:
+            return render(
+                request,
+                template_name='usuarios/cadastro.html',
+                context={'form': form}
+            )
 
 
     if request.method == 'GET':
@@ -110,6 +111,7 @@ def favorito(request):
         
         # Atualizando o valor do POST Request
         request.POST = post
+        print(post)
 
         # Passando os valores do POST para nosso objeto FavoritosForms
         # Como nossos campos de "usuario_id" e "fotografia_id" são
@@ -123,18 +125,14 @@ def favorito(request):
 
         # Filtrando o usuário e a fotografia na qual o usuário deu like
         # para ver se ela já existe no banco de dados dos Favoritos
-        favoritos = Favoritos.objects.filter(
-            Q(usuario=usuario) & Q(fotografia=fotografia)
-        )
+        favoritos = Favoritos.objects.filter(usuario=usuario.id).filter(fotografia=fotografia.id)
 
         # Se já existir no banco, precisamos atualizar o valor
         if favoritos.exists():
-            print('Existe no banco de dados')
             favoritos.update(is_favorito = is_favorito)
 
         # Senão vamos criar uma nova linha
         if not favoritos.exists():
-            print('Não existe no banco de dados')
             favoritos = Favoritos(
                 usuario = usuario,
                 fotografia = fotografia,

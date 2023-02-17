@@ -1,7 +1,10 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
-#from galeria.models import Fotografia
+from galeria.models import Fotografia
+from django import template
+
+register = template.Library()
 
 # Create your models here.
 class Favoritos(models.Model):
@@ -17,19 +20,23 @@ class Favoritos(models.Model):
         # qual que é a tabela
         related_name = 'userid',
     )
-    #fotografia = models.ForeignKey(
-    #    to = Fotografia,
-    #    on_delete = models.CASCADE,
-    #    null = False,
-    #    blank = False,
-    #    # Forma que a gente tem de poder localizar melhor
-    #    # qual que é a tabela
-    #    related_name = 'fotoid'
-    #)
-    #usuario_id = models.IntegerField(null=False, blank=False)
-    fotografia = models.IntegerField(null=False, blank=False)
+    fotografia = models.ForeignKey(
+        to = Fotografia,
+        on_delete = models.CASCADE,
+        null = False,
+        blank = False,
+        # Forma que a gente tem de poder localizar melhor
+        # qual que é a tabela
+        related_name = 'fotoid'
+    )
+    #usuario = models.IntegerField(null=False, blank=False)
+    #fotografia = models.IntegerField(null=False, blank=False)
     is_favorito = models.BooleanField(null=False, blank=False)
     data_like = models.DateTimeField(default=datetime.now(), blank=False)
 
     def __str__(self):
-        return self.nome
+        return str(self.is_favorito)
+
+    @register.filter
+    def fotografia_filtrada(favoritos, fotografia_id):
+        return favoritos.filter(fotografia=fotografia_id)
