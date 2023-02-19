@@ -1,0 +1,1 @@
+web: gunicorn setup.wsgi --max-requests 20
