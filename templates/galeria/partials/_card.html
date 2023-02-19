@@ -12,25 +12,9 @@
         <p class="card__titulo">{{ fotografia.nome }}</p>
         <div class="card__texto">
             <p class="card__descricao">{{ fotografia.legenda }}</p>
-            <!--form action="" method=""-->
-                {% csrf_token %}
-                <input id="id_fotografia" name="fotografia_id" type="hidden" value="{{ fotografia.id }}">
-                <input id="id_is_favorito" name="is_favorito" type="hidden" value="0">
-                <button class="heart__button" type="submit">
-                    <p>
-                    {{ fotografia.nlikes }}
-                    </p>
-                    {% if fotografia.fotofavoritada %}
-                    <span class="spanheart spanheartliked">
-                        <i class="fa fa-heart heart__red" aria-hidden="true"></i>
-                    </span>
-                    {% else %}
-                    <span class="spanheart">
-                        <i class="fa fa-heart heart__grey" aria-hidden="true"></i>
-                    </span>
-                    {% endif %}
-                </button>
-            <!--/form-->
+
+            {% include 'galeria/partials/_botao_favorito.html' %}
+            
         </div>
     </div>
 </li>

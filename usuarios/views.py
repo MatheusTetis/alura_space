@@ -35,12 +35,11 @@ def login(request):
             messages.success(request, f'Usuário {nome} logado com sucesso!')
             return redirect('index')
 
-    if request.method == 'GET':
-        return render(
-            request,
-            template_name='usuarios/login.html',
-            context={'form': form}
-        )
+    return render(
+        request,
+        template_name='usuarios/login.html',
+        context={'form': form}
+    )
 
 def cadastro(request):
     form = CadastroForms()

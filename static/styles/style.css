@@ -30,37 +30,6 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 
-.alert {
-    position: relative;
-    padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
-    color: var(--bs-alert-color);
-    background-color: var(--bs-alert-bg);
-    border: var(--bs-alert-border);
-    border-radius: var(--bs-alert-border-radius);
-    margin: 0;
-    font: inherit;
-}
-
-.alert-success {
-    --bs-alert-color: #084298;
-    --bs-alert-bg: #cfe2ff;
-    --bs-alert-border-color: #b6d4fe;
-    --bs-alert-padding-x: 1rem;
-    --bs-alert-padding-y: 1rem;
-    --bs-alert-border: 1px solid var(--bs-alert-border-color);
-    --bs-alert-border-radius: 0.375rem;
-}
-
-.alert-error {
-    --bs-alert-color: #721c24;
-    --bs-alert-bg: #f8d7da;
-    --bs-alert-border-color: #f5c6cb;
-    --bs-alert-padding-x: 1rem;
-    --bs-alert-padding-y: 1rem;
-    --bs-alert-border: 1px solid var(--bs-alert-border-color);
-    --bs-alert-border-radius: 0.375rem;
-}
-
 body {
     line-height: 1;
     font-family: 'Space Grotesk', sans-serif;

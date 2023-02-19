@@ -1,13 +1,8 @@
 {% load static %}
 <header class="cabecalho">
     <img src="{% static '/assets/logo/Logo(2).png' %}" alt="Logo da Alura Space" />
-    {% if not user.is_authenticated %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-        <p id="{{ message.tags }}">{{ message }}</p>
-    </div>
-    {% endfor %}
-    {% endif %}
+    
+    {% include 'galeria/partials/_alerta.html' %}
 
     {% include 'usuarios/partials/_user_nav.html' %}
 

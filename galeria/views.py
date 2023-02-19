@@ -69,7 +69,42 @@ def imagem(request, foto_id):
     )
 
 def buscar(request):
+    # Criando a função "faoritada" para verificar se a foto foi favoritada
+    # (se ela existe na tabela Favoritos) usando o comando
+    # fotografia.fotofavoritada dentro do Django Template "_card.html"
+    favoritada = Favoritos.objects.filter(
+        fotografia=OuterRef('pk'),
+        usuario=request.user.id,
+        is_favorito=True,
+    )
+
+    # Criando a função "nlikes" para retornar o número de linhas da foto
+    # com "is_favorito" True ao usar o comando fotografia.nlikes
+    # dentro do Django Template "_card.html"
+    nlikes = Favoritos.objects.filter(
+        fotografia_id=OuterRef('pk'),
+        is_favorito=True,
+    ).annotate(numerolikes=Count('id'))
+
+    # Filtrando apenas fotos publicadas
     fotografias = Fotografia.objects.filter(publicada=True)
+    # Adicionando a função "fotofavoritada"
+    fotografias = fotografias.annotate(fotofavoritada=Exists(favoritada))
+    # Adicionando a função "nlikes" que vai contar quantos is_favorito = True
+    # contem na tabela de Favoritos usando o related_name "fotoid" como ponte
+    fotografias = fotografias.annotate(
+        nlikes=Count(
+            'fotoid__is_favorito',
+            filter = Q(fotoid__is_favorito=True)
+        )
+    )
+
+    # Criando o Queryset "favoritos" filtrando o usuário que fez a requisição
+    # e trazendo apenas as fotos favoritadas
+    favoritos = Favoritos.objects.filter(
+        usuario=request.user.id,
+        is_favorito=True,
+    )
 
     # Carregando as categorias para renderizar as tags
     categorias = []
@@ -92,5 +127,5 @@ def buscar(request):
     return render(
         request,
         template_name='galeria/buscar.html',
-        context={'cards': fotografias, 'categorias': categorias}
+        context={'cards': fotografias, 'categorias': categorias, 'favoritos': favoritos}
     )
