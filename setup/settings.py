@@ -31,7 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '.vercel.app',
-    '.now.sh'
+    '.now.sh',
+    '127.0.0.1'
 ]
 
 
@@ -147,3 +148,13 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.SUCCESS: 'success',
 }
+
+# Configurações para Deploy
+# Unless your site should be available over both SSL and non-SSL connections,
+# you may want to either set this setting True or configure a load balancer
+# or reverse-proxy server to redirect all connections to HTTPS.
+SECURE_SSL_REDIRECT = False
+# Using a secure-only session cookie makes it more difficult
+# for network traffic sniffers to hijack user sessions.
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
