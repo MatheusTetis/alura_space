@@ -89,24 +89,24 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # Database para localhost
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Database para hosts externos com Postgresql
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'alura_space',
-#        'USER': 'matheus',
-#        'PASSWORD': str(os.getenv('DATABASE_KEY')),
-#        'HOST': 'localhost',
-#        'PORT': '5432',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
 #}
+
+# Database para hosts externos com Postgresql
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'alura_space',
+        'USER': 'matheus',
+        'PASSWORD': str(os.getenv('DATABASE_KEY')),
+        'HOST': 'postgres',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
