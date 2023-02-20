@@ -34,7 +34,8 @@ ALLOWED_HOSTS = [
     '.now.sh',
     '127.0.0.1',
     '.herokuapp.com',
-    '.onrender.com'
+    '.onrender.com',
+    '0.0.0.0'
 ]
 
 
