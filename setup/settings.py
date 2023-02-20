@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path, os
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
+import dj_database_url
 
 load_dotenv()
 
@@ -98,15 +99,20 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 # Database para hosts externos com Postgresql
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'alura_space',
-        'USER': 'matheus',
-        'PASSWORD': str(os.getenv('DATABASE_KEY')),
-        'HOST': 'postgres',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://matheus:yvX9sriq8TNYbNJUqXOJNoiAkDZ0YRBh@dpg-cfpdebo2i3mo4bq242jg-a/alura_space',
+        conn_max_age=600
+    )
 }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'alura_space',
+#        'USER': 'matheus',
+#        'PASSWORD': str(os.getenv('DATABASE_KEY')),
+#        'HOST': 'postgres',
+#        'PORT': '5432',
+#    }
+#}
 
 
 # Password validation
