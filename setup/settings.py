@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path, os
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
+import dj_database_url
 
 load_dotenv()
 
@@ -89,21 +90,26 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # Database para localhost
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 # Database para hosts externos com Postgresql
-#DATABASES = {
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://matheus:yvX9sriq8TNYbNJUqXOJNoiAkDZ0YRBh@dpg-cfpdebo2i3mo4bq242jg-a/alura_space',
+        conn_max_age=600
+    )
+}
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #        'NAME': 'alura_space',
 #        'USER': 'matheus',
 #        'PASSWORD': str(os.getenv('DATABASE_KEY')),
-#        'HOST': 'localhost',
+#        'HOST': 'postgres',
 #        'PORT': '5432',
 #    }
 #}
