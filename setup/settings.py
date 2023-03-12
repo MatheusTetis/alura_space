@@ -25,7 +25,46 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
+USE_S3 = str(os.getenv('USE_S3')) == 'TRUE'
+
+if USE_S3:
+    # Configurando para armazenar os Statics e Media no Bucket S3 da AWS
+    # Utilizando essa documentação:
+    # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+
+    # django < 4.2
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # STATICFILES_STORAGE mostra para o Django onde ele deve depositar os
+    # arquivos estáticos quando usarmos o comando collectstatics
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+    SECRET_KEY = str(os.getenv('SECRET_KEY'))
+    AWS_S3_ACCESS_KEY_ID = str(os.getenv('AWS_S3_ACCESS_KEY_ID'))
+    AWS_S3_SECRET_ACCESS_KEY = str(os.getenv('AWS_S3_SECRET_ACCESS_KEY'))
+    AWS_STORAGE_BUCKET_NAME = str(os.getenv('AWS_STORAGE_BUCKET_NAME'))
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    #AWS_DEFAULT_ACL = 'public-read'
+    # s3 static settings
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+else:
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS =  [
+        os.path.join(BASE_DIR, 'setup/static'),
+    ]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,7 +89,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'galeria.apps.GaleriaConfig',
-    'usuarios.apps.UsuariosConfig'
+    'usuarios.apps.UsuariosConfig',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -89,30 +129,24 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# Database para localhost
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
+USE_POSTGRESQL = str(os.getenv('USE_POSTGRESQL')) == 'TRUE'
 
-# Database para hosts externos com Postgresql
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://matheus:yvX9sriq8TNYbNJUqXOJNoiAkDZ0YRBh@dpg-cfpdebo2i3mo4bq242jg-a/alura_space',
-        conn_max_age=600
-    )
-}
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'alura_space',
-#        'USER': 'matheus',
-#        'PASSWORD': str(os.getenv('DATABASE_KEY')),
-#        'HOST': 'postgres',
-#        'PORT': '5432',
-#    }
-#}
+if USE_POSTGRESQL:
+    # Database para hosts externos com Postgresql
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='postgres://matheus:yvX9sriq8TNYbNJUqXOJNoiAkDZ0YRBh@dpg-cfpdebo2i3mo4bq242jg-a/alura_space',
+            conn_max_age=600
+        )
+    }
+else:
+    # Database para localhost
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -144,21 +178,6 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-STATICFILES_DIRS =  [
-    os.path.join(BASE_DIR, 'setup/static'),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
