@@ -5,10 +5,8 @@
         {% if fotografia.foto == "" or fotografia.foto == null %}
             <img class="card__imagem" src="{% static 'static/assets/imagens/galeria/img-not-found.png' %}" alt="foto">
         {% else %}
-            {% with mediaurl|add:fotografia.foto.path as fotourl%}
             <!--img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto"-->
-            <img class="card__imagem" src="{% static 'media/' fotografia.foto.path %}" alt="foto">
-            {% endwith %}    
+            <img class="card__imagem" src="{{ mediaurl + fotografia.foto.path }}" alt="foto">
         {% endif %}
     </a>
     <span class="card__tag">{{ fotografia.get_categoria_display }}</span>
