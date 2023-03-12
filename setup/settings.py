@@ -34,10 +34,12 @@ if USE_S3:
     # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 
     # django < 4.2
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # STATICFILES_STORAGE mostra para o Django onde ele deve depositar os
     # arquivos estáticos quando usarmos o comando collectstatics
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+    #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+    DEFAULT_FILE_STORAGE = 'setup.s3utils.MediaRootS3Boto3Storage'
+    STATICFILES_STORAGE = 'setup.s3utils.StaticRootS3Boto3Storage'
 
     SECRET_KEY = str(os.getenv('SECRET_KEY'))
     AWS_S3_ACCESS_KEY_ID = str(os.getenv('AWS_S3_ACCESS_KEY_ID'))
