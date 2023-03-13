@@ -4,7 +4,6 @@
         {% if fotografia.foto == "" or fotografia.foto == null %}
             <img class="card__imagem" src="{% static 'assets/imagens/galeria/img-not-found.png' %}" alt="foto">
         {% else %}
-            <!--img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto"-->
             <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
         {% endif %}
     </a>
