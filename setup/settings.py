@@ -34,28 +34,30 @@ if USE_S3:
     # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 
     # django < 4.2
-    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # STATICFILES_STORAGE mostra para o Django onde ele deve depositar os
     # arquivos estáticos quando usarmos o comando collectstatics
-    #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-    DEFAULT_FILE_STORAGE = 'setup.s3utils.MediaRootS3Boto3Storage'
-    STATICFILES_STORAGE = 'setup.s3utils.StaticRootS3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+    #DEFAULT_FILE_STORAGE = 'setup.s3utils.MediaRootS3Boto3Storage'
+    #STATICFILES_STORAGE = 'setup.s3utils.StaticRootS3Boto3Storage'
 
     SECRET_KEY = str(os.getenv('SECRET_KEY'))
     AWS_S3_ACCESS_KEY_ID = str(os.getenv('AWS_S3_ACCESS_KEY_ID'))
     AWS_S3_SECRET_ACCESS_KEY = str(os.getenv('AWS_S3_SECRET_ACCESS_KEY'))
     AWS_STORAGE_BUCKET_NAME = str(os.getenv('AWS_STORAGE_BUCKET_NAME'))
+    AWS_MEDIA_STORAGE_BUCKET_NAME = str(os.getenv('AWS_MEDIA_STORAGE_BUCKET_NAME'))
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_MEDIA_DOMAIN = f'{AWS_MEDIA_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     #AWS_DEFAULT_ACL = 'public-read'
     # s3 static settings
-    STATIC_LOCATION = 'static'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-    STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    #STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
     # s3 public media settings
-    PUBLIC_MEDIA_LOCATION = 'media'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-    MEDIA_ROOT = '/media/'
+    #PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_MEDIA_DOMAIN}/'
+    #MEDIA_ROOT = '/media/'
 else:
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/4.1/howto/static-files/
